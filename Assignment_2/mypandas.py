@@ -10,6 +10,7 @@ from collections import OrderedDict
 import csv
 import datetime as dt
 import math
+import statistics as st
 import ast
 
 class DataFrame():
@@ -118,16 +119,8 @@ class DataFrame():
     def median(self, column_name):
         try:
            calc_set = self.convert(self[column_name])
-           if (calc_set):
-             calc_set.sort()
-             n = float(len(calc_set))
-             if n%2 != 0:
-                return calc_set[round(n/2)]
-             else:
-                p1 = calc_set[round(n/2)]
-                p2 = calc_set[round(n/2) + 1]
-                return (p1+p2)/2
-
+           
+           return st.median(calc_set)
         except TypeError:
             print("Could not sum data; format: {}".format(type(calc_set[1])))          
     
@@ -207,7 +200,7 @@ Tests
 
 """
 # print(df.max("Transaction_date"))
-# print(df.std("Price"))
+# print(df.median("Price"))
 
 # ls = ["1/1/12 6:17","Product1","1000","Discoverer","carolina","Basildon","England","United Kingdom","1/1/12 6:00","1/2/09 6:08","51.5","-1.1166667"]
 
