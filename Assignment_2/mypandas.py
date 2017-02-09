@@ -167,12 +167,11 @@ class DataFrame():
         return
 
     # Task 4
-    def add_rows(self, list_of_lists):   
-        if all([len(a_list) == len(self.header) for a_list in list_of_lists]):
-            for each_list in list_of_lists:
-                self.data.append(each_list)
+    def add_rows(self, a_list):   
+        if len(a_list) == len(self.header):
+            self.data.append(OrderedDict(zip(self.header, a_list)))
         else:
-            raise ValueError("Some of the rows do not have the correct number of columns.")
+            raise ValueError("List entry could not be done. Incorrect number of columns.")
     
     # Task 5
     def add_column(self, list_of_values, column_name):
@@ -209,10 +208,13 @@ Tests
 """
 # print(df.max("Transaction_date"))
 # print(df.std("Price"))
-# ls = [["1/1/12 6:17","Product1","1000","Mastercard","carolina","Basildon","England","United Kingdom","1/1/12 6:00","1/2/09 6:08","51.5","-1.1166667"],
-# ["1/1/12 6:17","Product1","1000","Mastercard","carolina","Basildon","England","United Kingdom","1/1/12 6:00","1/2/09 6:08","51.5","-1.1166667"]]
+
+# ls = ["1/1/12 6:17","Product1","1000","Discoverer","carolina","Basildon","England","United Kingdom","1/1/12 6:00","1/2/09 6:08","51.5","-1.1166667"]
+
 # df.add_rows(ls)
+
 # print(df[998])
+
 # import random
 # ls = [random.randint(1,10) for r in range(0,len(df.data))]
 
