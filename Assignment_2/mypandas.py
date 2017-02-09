@@ -30,9 +30,9 @@ class DataFrame():
             self.data = list_of_lists[1:]
             self.header = list_of_lists[0]
         else:
-            # data[0]???
             self.header = ['column' + str(index + 1) for index, column in enumerate(list_of_lists[0])]
-            self.data = list_of_lists[1:]
+            # get data as copy with slice
+            self.data = list_of_lists[:]
 
         #----- Task 2 ------
         self.header = [header.strip() for header in self.header]
@@ -119,7 +119,6 @@ class DataFrame():
     def median(self, column_name):
         try:
            calc_set = self.convert(self[column_name])
-           
            return st.median(calc_set)
         except TypeError:
             print("Could not sum data; format: {}".format(type(calc_set[1])))          
