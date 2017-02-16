@@ -261,8 +261,16 @@ df = DataFrame.from_csv('../SalesJan2009.csv')
 Tests
 
 """
-df.sort_by("Transaction_date")
-print(df['Transaction_date'][:5])
+
+# Boolean indexing
+# print(df[df["Payment_Type"] == "Visa"][:5])
+# print(df[df["Price"] > 2000][:5])
+# print(df[df["Price"] < 2000][:5])
+# print(df[df["Price"] >= 3600][:5])
+
+
+# df.sort_by("Transaction_date")
+# print(df['Transaction_date'][:5])
 
 # print(df.min("Transaction_date"))
 # print(df.median("Price"))
