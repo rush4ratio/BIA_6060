@@ -243,6 +243,9 @@ class DataFrame():
         else:
             return [row for row in self.data if row[column_name] == value]
     
+    def sort_by(self, column, reverseOrder = False):
+        self.data.sort(key=lambda col: col[column], reverse = reverseOrder)
+
 # lines = open("SalesJan2009.csv").readlines()
 # lines = [line.strip() for line in lines]
 # data = [l.split(',') for l in lines]
@@ -258,7 +261,10 @@ df = DataFrame.from_csv('../SalesJan2009.csv')
 Tests
 
 """
-print(df.min("Transaction_date"))
+df.sort_by("Transaction_date")
+print(df['Transaction_date'][:5])
+
+# print(df.min("Transaction_date"))
 # print(df.median("Price"))
 
 # ls = ["1/1/12 6:17","Product1","1000","Discoverer","carolina","Basildon","England","United Kingdom","1/1/12 6:00","1/2/09 6:08","51.5","-1.1166667"]
