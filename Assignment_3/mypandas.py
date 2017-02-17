@@ -7,11 +7,15 @@ USING PYTHON 3
 
 
 from collections import OrderedDict
+from collections import defaultdict
+
 import csv
 import datetime as dt
 import math
 import statistics as st
 import ast
+
+
 class Series(list):
         def __eq__(self, other):
             ret_list = []
@@ -52,6 +56,20 @@ class Series(list):
                 ret_list.append(item >= other)
 
             return ret_list
+
+        def __ne__(self, other):
+            ret_list = []
+
+            for item in self:
+                ret_list.append(item != other)
+
+            return ret_list
+
+def avg(a_list):
+    return sum(a_list)/float(len(a_list))
+
+
+
 
 class DataFrame():
     @classmethod
@@ -96,11 +114,21 @@ class DataFrame():
     def __getitem__(self, item):
         # rows only
         if isinstance(item, (int, slice)):
+            for j in range(0, len(self.data)):
+                    for key in self.data[j]:
+                        if isinstance(self.data[j][key], dt.date):
+                            self.data[j][key] = str(self.data[j][key])
+
             return self.data[item]
 
         # columns only
         elif isinstance(item, str):
             data_col = Series([row[item] for row in self.data])      
+            
+            for j in range(0, len(data_col)):
+                if isinstance(data_col[j], dt.date):
+                    data_col[j] = str(data_col[j])
+
             return data_col
             
             
@@ -137,17 +165,18 @@ class DataFrame():
                     if item[counter]:
                         return_only_bools.append(self.data[counter])
                 
+                for j in range(0, len(return_only_bools)):
+                    for key in return_only_bools[j]:
+                        if isinstance(return_only_bools[j][key], dt.date):
+                            return_only_bools[j][key] = str(return_only_bools[j][key])
+
                 return return_only_bools
     
             else:
                 
                 return [[row[column_name] for column_name in item] for row in self.data]
             
-    
- 
-        
-            
-            
+
             
     def get_rows_where_column_has_value(self, column_name, value, index_only = False):
         if index_only:
@@ -246,6 +275,23 @@ class DataFrame():
     def sort_by(self, column, reverseOrder = False):
         self.data.sort(key=lambda col: col[column], reverse = reverseOrder)
 
+ 
+    def group_by(self,group_by_col, col_look_up, aggregate_func):
+        dict_lookup = defaultdict(list)
+
+
+        for ordered_dict_row in self.data:
+            dict_lookup[ordered_dict_row[group_by_col]].append(
+                ordered_dict_row[col_look_up]
+                )
+
+        aggregated_dict = {}
+
+        aggregated_dict = { key: aggregate_func(dict_lookup[key]) for key in dict_lookup}
+
+        return aggregated_dict
+
+
 # lines = open("SalesJan2009.csv").readlines()
 # lines = [line.strip() for line in lines]
 # data = [l.split(',') for l in lines]
@@ -261,16 +307,23 @@ df = DataFrame.from_csv('../SalesJan2009.csv')
 Tests
 
 """
+# df.sort_by("Transaction_date")
+# print(df[:5])
+
+
+
 
 # Boolean indexing
+#-------------------
 # print(df[df["Payment_Type"] == "Visa"][:5])
-# print(df[df["Price"] > 2000][:5])
+# print(df[df["Price"] < 2000][:5])
 # print(df[df["Price"] < 2000][:5])
 # print(df[df["Price"] >= 3600][:5])
 
 
-# df.sort_by("Transaction_date")
-# print(df['Transaction_date'][:5])
+
+# print(df.group_by('Country', 'Price', avg))
+
 
 # print(df.min("Transaction_date"))
 # print(df.median("Price"))
