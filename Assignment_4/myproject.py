@@ -3,6 +3,10 @@ import json
 import requests
 import datetime as dt
 import re
+import random
+import time
+
+
 
 from flask import Flask, request, Response
 from textblob import TextBlob
@@ -112,6 +116,10 @@ def print_pretty_forecast(w_forecast):
 
 @application.route('/slack', methods=['POST'])
 def inbound():
+
+	delay = random.uniform(0,10)
+	time.sleep(delay)
+
 	response = {'username': 'rush_robot', 'icon_emoji': ':robot_face:'}
 
 	#if request.form.get('token') == SLACK_WEBHOOK_SECRET:
