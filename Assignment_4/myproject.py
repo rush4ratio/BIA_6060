@@ -53,10 +53,12 @@ def get_answers_from_slack(text_que, que_tags = None):
 
 	answers = []
 	for k in list_of_responses:
-		if  list_of_responses[k]:
+		if  list_of_responses[k] and list_of_responses[k][3] != 0:
 			answers.append(list_of_responses[k])
+	
+	answers.sort(key= lambda x:x[5], reverse = True)
 
-	return answers
+	return answers[:5]
 
 
 def post_to_bot_chat_slack_resp(answers, resp_obj):
