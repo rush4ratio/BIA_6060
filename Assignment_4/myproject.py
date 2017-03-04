@@ -21,17 +21,7 @@ application = Flask(__name__)
 
 slack_inbound_url = 'https://hooks.slack.com/services/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'
 
-def post_to_bot_chat_slack_resp(answers, resp_obj):
-	query_response = "\n"
 
-	for item in answers:
-		query_response += "Title: " + item[1] + "\n"
-		query_response += "Link: " + "<"+item[2]+"|" + item[2]+">" + "\n"
-		query_response += "Number of responses: " + str(item[3]) + "\n"
-		query_response += "Date asked: " + dt.datetime.fromtimestamp(item[4]).strftime('%m-%d-%Y %H:%M:%S') + "\n\n"
-
-	resp_obj["text"] = query_response
-	r = requests.post(slack_inbound_url, json=resp_obj)
 
 def get_answers_from_slack(text_que, que_tags = None):
 	if(que_tags):
